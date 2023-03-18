@@ -1,0 +1,13 @@
+{
+    "params":
+    {
+        "app_name" : "Hospitalify",
+        "tagline" : "AI face recognition token booking",
+        "login_img" : "logo_blue.png",
+
+        "admin_name" : "Admin",
+        "admin_user" : "admin",
+        "admin_password" : "1234"
+        
+    }
+}

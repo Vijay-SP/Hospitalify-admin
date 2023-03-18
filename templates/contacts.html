@@ -1,0 +1,87 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group no-border">
+                    <input type="text" id="search" value="" class="form-control" placeholder="Search...">
+                    <button type="submit" class="btn btn-primary btn-round btn-just-icon">
+                        <i class="material-icons">search</i>
+                        <div class="ripple-container"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-plain">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title mt-0">Contacts List</h4>
+                        <p class="card-category">The list of all the contact messages from the app users.</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="">
+                                    <th> Name </th>
+                                    <th> Email </th>
+                                    <th> Message </th>
+                                    <th> Date & Time </th>
+                                    <th> Delete </th>
+                                </thead>
+                                <tbody>
+                                    {% for contact in contacts %}
+                                    <tr id="{{contact['email']}}">
+                                        <td>{{ contact["name"]}}</td>
+                                        <td> {{ contact["email"] }}</td>
+                                        <td> {{ contact["message"] }}</td>
+                                        <td> {{ contact["date"] }}</td>
+                                        <td>
+                                            <a href="/deletecontact/{{contact['id']}}"><button class="btn btn-info btn-round"
+                                                    type="button">Delete</button></a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h3 id="error-text"></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Search functionality
+    var contacts_list = {{ contacts | tojson }};
+    document.getElementById("search").addEventListener("input", function (event) {
+        var query = this.value.trim().toLowerCase();
+        if (query.length > 0) {
+            var count = 0;
+            for (var i = 0; i < contacts_list.length; i++) {
+                var prop_string = JSON.stringify(contacts_list[i]).toLowerCase();
+                if (prop_string.includes(query)) {
+                    document.getElementById(contacts_list[i]['email']).style.display = "table-row";
+                    count++;
+                    document.getElementById("error-text").innerText = "";
+
+                } else {
+                    document.getElementById(contacts_list[i]['email']).style.display = "none";
+                }
+                if (count < 1) {
+                    document.getElementById("error-text").innerText = "No match found for " + query;
+                }
+            }
+        }
+    });
+
+</script>
+{% endblock %}

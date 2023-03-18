@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Update Datewise Slots</title>
+  </head>
+  <body>
+    <h1>Update Datewise Slots</h1>
+    <form method="POST" action="/set_slots" >
+  <label for="date">Date:</label>
+  <input type="date" id="date" name="date" required><br><br>
+  <label for="slots">Slots (separated by commas):</label>
+  <input type="text" id="slots" name="slots" required><br><br>
+  <input type="hidden" id="hospital_id" name="hospital_id" value="{{ userId }}">
+  <input type="submit" value="Add Slots">
+</form>
+  </body>
+</html>

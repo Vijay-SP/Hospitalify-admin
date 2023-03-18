@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.0.1">
+    <title>Login-{{params['app_name']}}</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/sign-in/">
+
+    <link href="{{ url_for('static' , filename='css/signin.css') }}" rel="stylesheet">
+</head>
+
+<body class="text-center">
+
+    <form class="form-signin" method="post" action="/register" enctype="multipart/form-data">
+        <div class="card">
+            <div class="card-body">
+                <img class="mb-4" src="{{ url_for('static' , filename='/img/logo_blue.jpeg') }}" alt="" width="120"
+                    height="120">
+                <h1 class="h3 mb-3 font-weight-normal">Sign in</h1>
+                <label for="name" class="sr-only">Hospital Name</label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="Type your hospital name" required
+                    autofocus>
+                 <label for="email" class="sr-only">Hospital Email</label>
+                <input type="text" id="email" name="email" class="form-control" placeholder="Type your email here" required
+                    autofocus>
+                <label for="pass" class="sr-only">Password</label>
+                <input type="password" id="pass" name="password" class="form-control" placeholder="Type your password here" required
+                    autofocus>
+
+
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <p class="mt-5 mb-3 text-muted">&copy; {{params['app_name']}} @2021</p>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>

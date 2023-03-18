@@ -1,0 +1,127 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <a href="/addproperty">
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-primary btn-round">Add new courses</button>
+                </div>
+            </a>
+            <div class="col-md-4">
+                <div class="input-group no-border">
+                    <input type="text" id="search" value="" class="form-control" placeholder="Search anything...">
+                    <button type="submit" class="btn btn-primary btn-round btn-just-icon">
+                        <i class="material-icons">search</i>
+                        <div class="ripple-container"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="property-gallery">
+
+            {% if course | length > 0 %}
+            {% for property in course %}
+            <div class="col-md-3" id="{{property['id']}}">
+                <div class="card">
+                    <a href="/property/{{property['id']}}">
+
+                        <div class="card-body">
+                            <h4 class="card-title">Course Name:- {{ property["CourseName"] }}</h4>
+                            <p class="card-description">Category:- {{ property["CourseCatogery"] }}
+                            </p>
+                            <p class="text-success"> {{ 'Featured' if property["isFeatured"] else ''}} </p>
+                        </div>
+                    </a>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">access_time</i> added on {{ property["updated_on"] }}
+                        </div>
+                        <div class="col-md-6">
+                        <div class="float-right">
+                            <button type="button" class="btn btn-warning btn-round btn-just-icon" data-toggle="modal"
+                                data-target="#{{property['prop_name']}}"><i class="material-icons"
+                                    style="color: #fff;">delete</i></button>
+                        </div>
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="{{property['prop_name']}}" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel"><b>Confirm Delete</b></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Property to be deleted - <b>{{property['prop_name']}}</b>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="callDelete( `{{property['id']}}` )">
+                                            <i class="material-icons">delete</i> Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>No properties yet</h4>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3 id="error-text"></h3>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    function callDelete(id) {
+        window.location.replace("/delete/" + id);
+    }
+
+    // Search functionality
+    var property_list = {{ course | tojson }};
+    document.getElementById("search").addEventListener("input", function (event) {
+        var query = this.value.trim().toLowerCase();
+        if (query.length > 0) {
+            var count = 0;
+            for (var i = 0; i < property_list.length; i++) {
+                var prop_string = JSON.stringify(property_list[i]).toLowerCase();
+                if (prop_string.includes(query)) {
+                    document.getElementById(property_list[i]['id']).style.display = "block";
+                    count++;
+                    document.getElementById("error-text").innerText = "";
+
+                } else {
+                    document.getElementById(property_list[i]['id']).style.display = "none";
+                }
+                if (count < 1) {
+                    document.getElementById("error-text").innerText = "No match found for " + query;
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}

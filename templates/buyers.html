@@ -1,0 +1,81 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group no-border">
+                    <input type="text" id="search" value="" class="form-control" placeholder="Search...">
+                    <button type="submit" class="btn btn-primary btn-round btn-just-icon">
+                        <i class="material-icons">search</i>
+                        <div class="ripple-container"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-plain">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title mt-0">Buyers List</h4>
+                        <p class="card-category">The list of all the users who have created their account (non-broker) on the app.
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="">
+                                    <th> Name </th>
+                                    <th> Email </th>
+
+                                </thead>
+                                <tbody>
+                                    {% for user in users %}
+                                    <tr id="{{user['email']}}">
+                                        <td>{{ user["name"]}}</td>
+                                        <td> {{ user["email"] }}</td>
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h3 id="error-text"></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Search functionality
+    var users_list = {{ users | tojson }};
+    document.getElementById("search").addEventListener("input", function (event) {
+        var query = this.value.trim().toLowerCase();
+        if (query.length > 0) {
+            var count = 0;
+            for (var i = 0; i < users_list.length; i++) {
+                var prop_string = JSON.stringify(users_list[i]).toLowerCase();
+                if (prop_string.includes(query)) {
+                    document.getElementById(users_list[i]['email']).style.display = "table-row";
+                    count++;
+                    document.getElementById("error-text").innerText = "";
+
+                } else {
+                    document.getElementById(users_list[i]['email']).style.display = "none";
+                }
+                if (count < 1) {
+                    document.getElementById("error-text").innerText = "No match found for " + query;
+                }
+            }
+        }
+    });
+
+</script>
+{% endblock %}
